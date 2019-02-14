@@ -18,8 +18,8 @@ struct EnvVar {
     value: String,
 }
 
-fn parse_matrix(m: &str) -> serde_json::Result<InputMatrix> {
-    let parsed: InputMatrix = match serde_json::from_str(m) {
+fn parse_matrix(m: String) -> serde_json::Result<InputMatrix> {
+    let parsed: InputMatrix = match serde_json::from_str(&m) {
         Ok(v) => v,
         Err(err) => return Err(err),
     };
@@ -105,7 +105,7 @@ fn main() -> Result<(), String> {
         .value_of("command")
         .expect("No input given for `command`.");
 
-    match parse_matrix(matrix_str) {
+    match parse_matrix(matrix_str.to_string()) {
         Ok(v) => {
             run_commands(get_combinations(v), command.to_string());
             Ok(())
