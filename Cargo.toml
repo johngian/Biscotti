@@ -1,0 +1,10 @@
+[package]
+name = "biscotti"
+version = "0.1.0"
+authors = ["John Giannelos <jgiannelos@mozilla.com>"]
+edition = "2018"
+
+[dependencies]
+clap = "2.32.0"
+serde_json = "1.0.37"
+itertools = "0.8.0"
