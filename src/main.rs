@@ -48,7 +48,7 @@ fn get_args() -> ArgMatches<'static> {
                 .required(true),
         );
 
-    return app.get_matches();
+    app.get_matches()
 }
 
 fn get_combinations(input_matrix: InputMatrix) -> Vec<Vec<EnvVar>> {
@@ -65,7 +65,7 @@ fn get_combinations(input_matrix: InputMatrix) -> Vec<Vec<EnvVar>> {
         matrix.push(env_vars);
     }
 
-    return matrix.into_iter().multi_cartesian_product().collect();
+    matrix.into_iter().multi_cartesian_product().collect()
 }
 
 fn run_commands(combinations: Vec<Vec<EnvVar>>, command: String) {
@@ -92,7 +92,7 @@ fn run_commands(combinations: Vec<Vec<EnvVar>>, command: String) {
     }
 
     for child in children {
-        child.join();
+        child.join().unwrap();
     }
 }
 
@@ -106,9 +106,10 @@ fn main() -> Result<(), String> {
         .expect("No input given for `command`.");
 
     match parse_matrix(matrix_str) {
-        Ok(v) => Ok(run_commands(get_combinations(v), command.to_string())),
+        Ok(v) => {
+            run_commands(get_combinations(v), command.to_string());
+            Ok(())
+        }
         Err(_) => Err("Cannot parse JSON input".to_string()),
-    };
-
-    Ok(())
+    }
 }
